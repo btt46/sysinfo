@@ -8,12 +8,22 @@ import plotly
 import psutil
 
 class SystemInfo():
+
+    _instances = {}
+
     def __init__(self):
         self.time_log = []     # Real Time
         self.cpu_log = []       
         self.memory_log = []
         self.load_log = []
-    
+
+    # Singleton
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
     @classmethod
     def append_data(cls, class_data, input_data):
         class_data.append(input_data)
